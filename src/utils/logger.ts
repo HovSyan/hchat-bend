@@ -4,6 +4,6 @@ export class Logger {
     }
 
     log(...msg: any[]): void {
-        process.stdout.write(`${msg}`);
+        process.stdout.write(`${msg.join(' ')}`);
     }
 }

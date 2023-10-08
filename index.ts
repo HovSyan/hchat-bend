@@ -1,3 +1,7 @@
-import { database } from "./db";
+import { database } from "./src/db";
+import { server } from "./src/server";
 
-database.init();
+(async () => {
+    await database.init();
+    await server.init();
+})();
