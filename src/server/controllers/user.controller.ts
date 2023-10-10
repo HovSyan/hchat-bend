@@ -19,7 +19,6 @@ export class UserController {
 
         server.get('/user', async (req, res) => {
             try {
-                console.log
                 this.assertQueryParamIdOrNickname(req.query);
                 const user = await this.get('id' in req.query ? +req.query.id : req.query.nickname);
                 user ? res.send(user) : res.sendStatus(404);

@@ -7,7 +7,7 @@ export type IRoom = {
     name: string
 }
 
-export type RoomModel = Model<IRoom, IRoom>;
+export type RoomModel = Model<IRoom, Omit<IRoom, 'id'>>;
 
 export const RoomTblName = 'Room';
 
@@ -16,7 +16,7 @@ export function init__Room(): void {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrementIdentity: true
+            autoIncrement: true
         },
         name: {
             type: DataTypes.STRING(100),

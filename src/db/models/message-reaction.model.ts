@@ -21,7 +21,7 @@ export function init__MessageReaction(): void {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrementIdentity: true
+            autoIncrement: true
         },
         message_id: {
             type: DataTypes.STRING(50),

@@ -16,7 +16,7 @@ export function init__Reaction(): void {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrementIdentity: true
+            autoIncrement: true
         },
         name: {
             type: DataTypes.STRING(25),
