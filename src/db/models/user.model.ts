@@ -7,7 +7,7 @@ export type IUser = {
     nickname: string
 }
 
-export type UserModel = Model<IUser, IUser>;
+export type UserModel = Model<IUser, Omit<IUser, 'id'>>;
 
 export const UserTblName = 'User';
 
@@ -16,10 +16,11 @@ export function init__User(): void {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrementIdentity: true
+            autoIncrement: true,
         },
         nickname: {
             type: DataTypes.STRING(100),
+            unique: true,
             allowNull: false
         }
     }, model_configs)

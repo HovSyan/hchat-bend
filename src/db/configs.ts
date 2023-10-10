@@ -11,5 +11,8 @@ export const db_configs: Options = {
 } as const
 
 export const model_configs: ModelOptions = {
-    freezeTableName: true
+    freezeTableName: true,
+    initialAutoIncrement: '1',
+    updatedAt: false,
+    createdAt: false
 }
