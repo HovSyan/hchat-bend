@@ -26,6 +26,15 @@ export class RoomController {
                 handleError(e, res);
             }
         })
+
+        server.get('/rooms', async (req, res) => {
+            try {
+                const rooms = await this.getAll();
+                rooms ? res.send(rooms) : res.sendStatus(404);
+            } catch(e) {
+                handleError(e, res);
+            }
+        })
     }
 
     private async create(roomJson: Omit<IRoom, 'id'>): Promise<IRoom> {
@@ -36,6 +45,11 @@ export class RoomController {
     private async get(id: number): Promise<IRoom | undefined> {
         const result = await this._handler.getById(id);
         return result?.toJSON();
+    }
+
+    private async getAll(): Promise<IRoom[] | undefined> {
+        const result = await this._handler.getAll();
+        return result?.map(_ => _.toJSON());
     }
 
     private assertRoom(json: unknown): asserts json is IRoom {

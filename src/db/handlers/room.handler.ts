@@ -11,4 +11,8 @@ export class RoomHandler {
             where: { id }
         })
     }
+
+    getAll(): Promise<RoomModel[]> {
+        return sequelize.models[RoomTblName].findAll();
+    }
 }

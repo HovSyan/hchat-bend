@@ -23,4 +23,8 @@ export function init__Room(): void {
             allowNull: false
         }
     }, model_configs);
+
+    sequelize.models[RoomTblName].findOrCreate<RoomModel>({ where: { id: 1, name: 'General' }});
+    sequelize.models[RoomTblName].findOrCreate<RoomModel>({ where: { id: 2, name: 'Random' }});
+    sequelize.models[RoomTblName].findOrCreate<RoomModel>({ where: { id: 3, name: 'Fun' }});
 }
