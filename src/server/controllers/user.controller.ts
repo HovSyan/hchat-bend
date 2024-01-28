@@ -26,6 +26,16 @@ export class UserController {
                 handleError(e, res);
             }
         })
+
+        server.get('/user/validateNickname', async (req, res) => {
+            try {
+                this.assertQueryParamNickname(req.query);
+                const user = this.get(req.query.nickname);
+                res.send(!user);
+            } catch(e) {
+                handleError(e, res);
+            }
+        })
     }
 
     private async create(usr: Omit<IUser, 'id'>): Promise<IUser> {
@@ -53,6 +63,13 @@ export class UserController {
         const isValidQuery = !!query && typeof query === 'object' && ('id' in query || 'nickname' in query);
         if(!isValidQuery) {
             throw new Error('Bad syntax of get User, consider providing id or nickname');
+        }
+    }
+
+    private assertQueryParamNickname(query: any): asserts query is { nickname: any } {
+        const isValidQuery = !!query && typeof query === 'object' && 'nickname' in query;
+        if(!isValidQuery) {
+            throw new Error('Bad syntax, consider providing nickname');
         }
     }
 

@@ -4,7 +4,8 @@ import { model_configs } from "../configs";
 
 export type IUser = {
     id: number,
-    nickname: string
+    nickname: string,
+    avatar?: string,
 }
 
 export type UserModel = Model<IUser, Omit<IUser, 'id'>>;
@@ -22,6 +23,10 @@ export function init__User(): void {
             type: DataTypes.STRING(100),
             unique: true,
             allowNull: false
+        },
+        avatar: {
+            type: DataTypes.STRING(),
+            allowNull: true
         }
     }, model_configs)
 }
