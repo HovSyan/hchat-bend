@@ -27,11 +27,11 @@ export class UserController {
             }
         })
 
-        server.get('/user/validateNickname', async (req, res) => {
+        server.get('/user/nicknameExists', async (req, res) => {
             try {
                 this.assertQueryParamNickname(req.query);
-                const user = this.get(req.query.nickname);
-                res.send(!user);
+                const user = await this.get(req.query.nickname);
+                res.send(!!user);
             } catch(e) {
                 handleError(e, res);
             }
