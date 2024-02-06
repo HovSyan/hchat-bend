@@ -1,16 +1,19 @@
-import express from 'express';
+import express, { Express } from 'express';
+import multer from 'multer';
 import { UserHanlder } from "../../db/handlers/user.handler";
 import { IUser } from "../../db/models/user.model";
 import { handleError } from '../../utils/error-handler';
+
+const upload = multer();
 
 export class UserController {
     private _handler = new UserHanlder();
 
     init(server: express.Express): void {
-        server.post('/user', async (req, res) => {
+        server.post('/user', upload.single('avatar'), async (req, res) => {
             try {
                 this.assertUser(req.body)
-                const user = await this.create(req.body);
+                const user = await this.create({ ...req.body, avatar: this.toBase64Image(req.file) });
                 res.send(user);
             } catch(e) {
                 handleError(e, res);
@@ -39,7 +42,7 @@ export class UserController {
     }
 
     private async create(usr: Omit<IUser, 'id'>): Promise<IUser> {
-        const user = await this._handler.create(usr.nickname);
+        const user = await this._handler.create(usr);
         return user.toJSON();
     }
 
@@ -71,6 +74,10 @@ export class UserController {
         if(!isValidQuery) {
             throw new Error('Bad syntax, consider providing nickname');
         }
+    }
+
+    private toBase64Image(file: Express.Multer.File | undefined): string | undefined {
+        return file?.buffer.toString('base64');
     }
 
     private get mockUserJson(): Omit<IUser, 'id'> {

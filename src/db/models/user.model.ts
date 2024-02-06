@@ -25,7 +25,7 @@ export function init__User(): void {
             allowNull: false
         },
         avatar: {
-            type: DataTypes.STRING(),
+            type: DataTypes.BLOB(),
             allowNull: true
         }
     }, model_configs)

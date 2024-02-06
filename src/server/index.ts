@@ -1,4 +1,5 @@
 import express from 'express';
+import bodyParser from 'body-parser';
 import { Logger } from '../utils/logger';
 import { PORT } from './configs';
 import { UserController } from './controllers/user.controller';
@@ -21,6 +22,7 @@ class Server {
 
     private _initControllers(): void {
         this._serverApp.use(express.json());
+        this._serverApp.use(bodyParser.urlencoded({ extended: true }))
         this._userController.init(this._serverApp);
         this._roomController.init(this._serverApp);
     }

@@ -2,8 +2,8 @@ import { sequelize } from "../db.service";
 import { IUser, UserModel, UserTblName } from "../models/user.model";
 
 export class UserHanlder {
-    create(nickname: string): Promise<UserModel> {
-        return sequelize.models[UserTblName].create<UserModel>({ nickname }, { returning: true })
+    create(usr: Omit<IUser, 'id'>): Promise<UserModel> {
+        return sequelize.models[UserTblName].create<UserModel>(usr, { returning: true })
     }
 
     getById(id: number): Promise<UserModel | null> {
