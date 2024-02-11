@@ -1,5 +1,5 @@
-import { DataTypes, Model, Sequelize } from "sequelize"
-import { sequelize } from "../db.service";
+import { DataTypes, Model } from "sequelize"
+import { sequelize } from "../services/db.service";
 import { model_configs } from "../configs";
 
 export type IReaction = {

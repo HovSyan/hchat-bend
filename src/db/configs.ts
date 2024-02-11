@@ -16,3 +16,7 @@ export const model_configs: ModelOptions = {
     updatedAt: false,
     createdAt: false
 }
+
+export const assets_configs = {
+    avatarsPath: __dirname + '/avatars',
+} as const;

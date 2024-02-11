@@ -1,4 +1,4 @@
-import { sequelize } from "../db.service";
+import { sequelize } from "../services/db.service";
 import { IUser, UserModel, UserTblName } from "../models/user.model";
 
 export class UserHanlder {

@@ -1,7 +1,7 @@
 import { DataTypes, Model } from "sequelize"
 import { IRoom, RoomTblName } from "./room.model"
 import { IUser, UserTblName } from "./user.model"
-import { sequelize } from "../db.service"
+import { sequelize } from "../services/db.service"
 import { model_configs } from "../configs"
 
 export type IMessage = {

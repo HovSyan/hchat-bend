@@ -1,6 +1,8 @@
 import { Logger } from "../utils/logger";
-import { sequelize } from "./db.service";
+import { sequelize } from "./services/db.service";
 import { generateTables } from "./models";
+import { fsService } from "./services/directory.service";
+import { assets_configs } from "./configs";
 
 class Database {
     private logger = new Logger();
@@ -13,6 +15,10 @@ class Database {
 
             this.logger.log('Generating tables...');
             await generateTables();
+            this.logger.logln(' ✅');
+
+            this.logger.log('Checking avatars directory to be ready...')
+            await fsService.createDirIfNotExists(assets_configs.avatarsPath);
             this.logger.logln(' ✅');
             
             this.logger.logln('Done!');

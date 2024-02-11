@@ -1,4 +1,4 @@
-import { sequelize } from "../db.service";
+import { sequelize } from "../services/db.service";
 import { RoomModel, RoomTblName } from "../models/room.model";
 
 export class RoomHandler {

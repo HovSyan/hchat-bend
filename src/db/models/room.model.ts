@@ -1,5 +1,5 @@
 import { DataTypes, Model, Sequelize } from "sequelize"
-import { sequelize } from "../db.service";
+import { sequelize } from "../services/db.service";
 import { model_configs } from "../configs";
 
 export type IRoom = {
@@ -24,6 +24,7 @@ export function init__Room(): void {
         }
     }, model_configs);
 
+    // Create default rooms, if do not exist
     sequelize.models[RoomTblName].findOrCreate<RoomModel>({ where: { id: 1, name: 'General' }});
     sequelize.models[RoomTblName].findOrCreate<RoomModel>({ where: { id: 2, name: 'Random' }});
     sequelize.models[RoomTblName].findOrCreate<RoomModel>({ where: { id: 3, name: 'Fun' }});

@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import { sequelize } from "../db.service";
+import { sequelize } from "../services/db.service";
 import { init__MessageReaction } from "./message-reaction.model";
 import { init__Message } from "./message.model";
 import { init__Reaction } from "./reaction.model";

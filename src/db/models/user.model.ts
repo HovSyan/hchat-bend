@@ -1,5 +1,5 @@
 import { DataTypes, Model, Sequelize } from "sequelize"
-import { sequelize } from "../db.service"
+import { sequelize } from "../services/db.service"
 import { model_configs } from "../configs";
 
 export type IUser = {
@@ -25,7 +25,7 @@ export function init__User(): void {
             allowNull: false
         },
         avatar: {
-            type: DataTypes.BLOB(),
+            type: DataTypes.STRING(),
             allowNull: true
         }
     }, model_configs)

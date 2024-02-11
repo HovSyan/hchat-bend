@@ -2,7 +2,7 @@ import { DataTypes, Model, Sequelize } from "sequelize"
 import { IUser, UserModel, UserTblName } from "./user.model"
 import { IMessage, IMessageModel, MessageTblName } from "./message.model"
 import { IReaction, ReactionModel, ReactionTblName } from "./reaction.model"
-import { sequelize } from "../db.service"
+import { sequelize } from "../services/db.service"
 import { model_configs } from "../configs"
 
 export type IMessageReaction = {

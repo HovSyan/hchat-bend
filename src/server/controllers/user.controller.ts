@@ -1,10 +1,21 @@
-import express, { Express } from 'express';
+import express from 'express';
 import multer from 'multer';
 import { UserHanlder } from "../../db/handlers/user.handler";
 import { IUser } from "../../db/models/user.model";
 import { handleError } from '../../utils/error-handler';
+import { assets_configs } from '../../db/configs';
 
-const upload = multer();
+const upload = multer({ 
+    storage: multer.diskStorage({
+        destination: assets_configs.avatarsPath,
+        filename: (_, file, callback) => {
+            const extensionDotIndex = file.originalname.lastIndexOf('.');
+            const [filename, extension] = [file.originalname.substring(0, extensionDotIndex), file.originalname.substring(extensionDotIndex)];
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+            callback(null, `${filename}-${uniqueSuffix}${extension}`)
+        },
+    })
+ });
 
 export class UserController {
     private _handler = new UserHanlder();
@@ -13,7 +24,8 @@ export class UserController {
         server.post('/user', upload.single('avatar'), async (req, res) => {
             try {
                 this.assertUser(req.body)
-                const user = await this.create({ ...req.body, avatar: this.toBase64Image(req.file) });
+                const avatar = req.file?.filename || undefined;
+                const user = await this.create({ ...req.body, avatar });
                 res.send(user);
             } catch(e) {
                 handleError(e, res);
@@ -39,6 +51,8 @@ export class UserController {
                 handleError(e, res);
             }
         })
+
+        server.use('/user/avatar', express.static(assets_configs.avatarsPath))
     }
 
     private async create(usr: Omit<IUser, 'id'>): Promise<IUser> {
@@ -74,10 +88,6 @@ export class UserController {
         if(!isValidQuery) {
             throw new Error('Bad syntax, consider providing nickname');
         }
-    }
-
-    private toBase64Image(file: Express.Multer.File | undefined): string | undefined {
-        return file?.buffer.toString('base64');
     }
 
     private get mockUserJson(): Omit<IUser, 'id'> {
