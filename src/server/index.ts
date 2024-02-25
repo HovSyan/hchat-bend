@@ -9,25 +9,24 @@ import { HealthcheckController } from './controllers/healthcheck.controller';
 class Server {
     private _serverApp = express();
     private _logger = new Logger();
-    private _userController = new UserController();
-    private _roomController = new RoomController();
-    private _healthcheckController = new HealthcheckController();
 
     init(): Promise<void> {
         this._initControllers();
-        this._serverApp.listen(PORT, () => {
-            this._logger.logln(`Server running at PORT ${PORT}...`, '✅');
-            this._logger.logln('Done!');
-        })
-        return Promise.resolve();
+        return new Promise(res => {
+            this._serverApp.listen(PORT, () => {
+                this._logger.logln(`Server running at PORT ${PORT}...`, '✅');
+                this._logger.logln('Done!');
+                res();
+            })
+        });
     }
 
     private _initControllers(): void {
         this._serverApp.use(express.json());
         this._serverApp.use(bodyParser.urlencoded({ extended: true }))
-        this._userController.init(this._serverApp);
-        this._roomController.init(this._serverApp);
-        this._healthcheckController.init(this._serverApp);
+        new UserController(this._serverApp);
+        new RoomController(this._serverApp);
+        new HealthcheckController(this._serverApp);
     }
 }
 

@@ -4,6 +4,7 @@ import { UserHanlder } from "../../db/handlers/user.handler";
 import { IUser } from "../../db/models/user.model";
 import { handleError } from '../../utils/error-handler';
 import { assets_configs } from '../../db/configs';
+import { ControllerBase } from './base';
 
 const upload = multer({ 
     storage: multer.diskStorage({
@@ -17,10 +18,11 @@ const upload = multer({
     })
  });
 
-export class UserController {
+export class UserController extends ControllerBase {
     private _handler = new UserHanlder();
 
-    init(server: express.Express): void {
+    constructor(server: express.Express) {
+        super(server);
         server.post('/user', upload.single('avatar'), async (req, res) => {
             try {
                 this.assertUser(req.body)

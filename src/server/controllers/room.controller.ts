@@ -2,11 +2,17 @@ import express from 'express';
 import { handleError } from '../../utils/error-handler';
 import { IRoom } from '../../db/models/room.model';
 import { RoomHandler } from '../../db/handlers/room.handler';
+import { ControllerBase } from './base';
+import { MessagesHandler } from '../../db/handlers/messages.handler';
+import { RequestChecker } from '../../utils/request-checker';
 
-export class RoomController {
+export class RoomController extends ControllerBase {
+    private _checker = new RequestChecker();
     private _handler = new RoomHandler();
+    private _messagesHandler = new MessagesHandler();
 
-    init(server: express.Express): void {
+    constructor(server: express.Express) {
+        super(server);
         server.post('/room', async (req, res) => {
             try {
                 this.assertRoom(req.body)
@@ -22,6 +28,22 @@ export class RoomController {
                 this.assertQueryParamId(req.query);
                 const room = await this.get(+req.query.id);
                 room ? res.send(room) : res.sendStatus(404);
+            } catch(e) {
+                handleError(e, res);
+            }
+        })
+
+        server.get('/room/:id/messages', async (req, res) => {
+            try {
+                const roomId = req.params.id;
+                this.assertCorrectQueryParamsForMessagesGet(req.query);
+                this.assertCorrectRoomId(roomId);
+                const { offset, limit } = req.query;
+                const messages = await this._messagesHandler.getByRoomId(+roomId, +offset, +limit);
+                if (messages) {
+                    return res.send(messages);
+                }
+                return res.status(404).send('No room was found by ' + roomId);
             } catch(e) {
                 handleError(e, res);
             }
@@ -53,16 +75,32 @@ export class RoomController {
     }
 
     private assertRoom(json: unknown): asserts json is IRoom {
-        const isRoom = !!json && typeof json === 'object' && 'name' in json && typeof json.name === 'string';
+        const isRoom = this._checker.isObject(json) && 'name' in json && typeof json.name === 'string';
         if(!isRoom) {
             throw new Error('Bad syntax of Room, consider using ' + JSON.stringify(this.mockRoomJson));
         }
     }
 
     private assertQueryParamId(query: any): asserts query is { id: any } {
-        const isValidQuery = !!query && typeof query === 'object' && 'id' in query;
+        const isValidQuery = this._checker.isObject(query) && 'id' in query;
         if(!isValidQuery) {
             throw new Error('Bad syntax of get Room, consider providing id');
+        }
+    }
+
+    private assertCorrectQueryParamsForMessagesGet(query: any): asserts query is { offset: string, limit: string } {
+        const isValidQuery = this._checker.isObject(query) 
+            && this._checker.hasNumberProperty(query, 'offset') 
+            && this._checker.hasNumberProperty(query, 'limit');
+        
+        if(!isValidQuery) {
+            throw new Error('Bad syntax of get Messages, consider providing both offset and limit query params');
+        }
+    }
+
+    private assertCorrectRoomId(roomId: string) {
+        if (Number.isNaN(+roomId)) {
+            throw new Error('Invalid room id');
         }
     }
 
