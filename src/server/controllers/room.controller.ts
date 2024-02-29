@@ -31,7 +31,7 @@ export class RoomController extends ControllerBase {
             } catch(e) {
                 handleError(e, res);
             }
-        })
+        });
 
         server.get('/room/:id/messages', async (req, res) => {
             try {
@@ -47,7 +47,7 @@ export class RoomController extends ControllerBase {
             } catch(e) {
                 handleError(e, res);
             }
-        })
+        });
 
         server.get('/rooms', async (req, res) => {
             try {
@@ -56,7 +56,7 @@ export class RoomController extends ControllerBase {
             } catch(e) {
                 handleError(e, res);
             }
-        })
+        });
     }
 
     private async create(roomJson: Omit<IRoom, 'id'>): Promise<IRoom> {

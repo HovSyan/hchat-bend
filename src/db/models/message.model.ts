@@ -32,7 +32,7 @@ export function init__Message(): void {
             allowNull: false
         },
         text: {
-            type: DataTypes.STRING(500),
+            type: DataTypes.STRING(5000),
             allowNull: false
         },
         created_at: {

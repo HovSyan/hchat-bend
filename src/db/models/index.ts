@@ -12,5 +12,5 @@ export function generateTables(): Promise<Sequelize> {
     init__Message();
     init__Reaction();
     init__MessageReaction();
-    return sequelize.sync({ alter: true })
+    return sequelize.sync()
 }
