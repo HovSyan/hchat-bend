@@ -1,5 +1,8 @@
 import { ModelOptions, Options } from "sequelize"
 
+/*
+    This will be moved to .env, it is just here for demonstration purposes
+*/
 export const db_configs: Options = {
     dialect: 'mysql',
     database: 'HChat',
